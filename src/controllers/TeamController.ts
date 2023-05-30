@@ -38,13 +38,13 @@ class TeamsController {
     try {
       const { name } = req.body;
       const teamRepo = AppDataSource.manager.getRepository(Team);
-      const existingTeam = await teamRepo.findOne({ where: { name } });
+      const existingTeam = await teamRepo.findOne({ where: { name: `${name}` } });
 
       if (existingTeam) {
         return res.status(400).json({ error: 'O nome já existe' });
       }
 
-      const novo = teamRepo.create({ name });
+      const novo = teamRepo.create({ name: `${name}` });
       const team = await teamRepo.save(novo);
 
       res.json(team);
